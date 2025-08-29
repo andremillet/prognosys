@@ -1,0 +1,1 @@
+vamos criar um programa CLI chamado 'conecta' em bash que se se conecta a um dominio na internet e eexecuta um programa a partir desse servidor, de forma que 'conecta 100.70.233.125' execute um programa python no terminal, como o tui.py

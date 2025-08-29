@@ -1,0 +1,15 @@
+vamos criar um programa com interface de usuario de terminal, que permita selecionar dentre os arquivos .med do diretorio e escolher entre exibir o retorno de conduta-extractor.py e conduta-translator.py, semelhante ao seguinte:
+--------------- CONDUTA EXTRACTOR ----------------------------------------------------------------  o SELECIONAR ARQUIVO | CONDUTA EXTRACTOR | CONDUTA TRANSLATOR
+--------------------------------------------------------------------------------------------------
+./
+o arquivo1.med
+  arquivo2.med
+
+-------------------------------------------------------------------------------------------------
+8888 CONTEUDO DO ARQUIVO/RETORNO DA FUNCAO 
+
+
+
+
+
+--------------------------------------------------------------------------------------------------

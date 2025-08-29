@@ -1,0 +1,14 @@
+// o programa deve receber um arquivo de extensao .med, que é um arquivo de texto, e procurar pela seguinte string: "[CONDUTA]",
+e entao extrair seu conteudo, linha por linha, transformando em uma lista, de forma que o resultado de 'conduta-extractor(arquivo.med)', dado que, em algum lugar do arquivo se encontre a seguinte sequencia de strings:
+'
+[CONDUTA]
++AMITRIPTILINA 25MG NOITE;
+!ENCAMINHO PSICOLOGIA;
+!ORIENTO ATIVIDADE FISICA REGULAR;
+'
+gere a seguinte lista:
+['+AMITRIPTILINA 25MG NOITE',
+'!ENCAMINHO PSICOLOGIA',
+'!ORIENTO ATIVIDADE FISICA REGULAR']
+
+o programa devera ser eecutado em linha de comando, atraves de 'phython conduta-extractor.py nome-do-aquivo.med'

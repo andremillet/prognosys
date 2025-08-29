@@ -1,0 +1,43 @@
+vamos criar o programa 'conduta-translator' que vai receber uma lista do programa 'conduta-extractor' e criar uma nova lista a partir dessa, transformando cada item da lista, fazendo ajustes caso tenha algum simbolo e adicionando uma descricao, de forma que, ao receber uma lista como:
+['+AMITRIPTILINA 25MG NOITE', '!ENCAMINHO PSICOLOGIA', '!ORIENTO ATIVIDADE FISICA REGULAR'], o programa interaja com cada linha para transforma-la, fazendo a seguinte verificação com cada linha:
+- se comecar com '+', a string devera ser dividida em algumas partes:
+'comando': 'ADICIONAR'
+'medicacao:' toda string após o '+' ate o proximo espaço ' '
+dose: a string que sobrar de medicacao, até o proximo espaço
+'posologia:' a string que sobrar de dose
+devera ser criado o item 'descricao:', que recebera uma string da forma 'Adicionar [medicacao] [dose]  de medicamentos.'
+o primeiro item da lista passada, '+AMITRIPTILINA 25MG NOITE', se tornaria:
+{
+comando: 'ADICIONAR'
+medicacao:'AMITRIPTILINA',
+dose: '25MG',
+posologia: 'NOITE'
+descricao:'Adicionar AMITRIPTILINA 25MG à lista de medicamentos'
+}
+
+
+- se comecar com '!ENCAMINHO', a string devera ser dividida em algumas partes:
+'comando:' toda string após o '!' ate o proximo espaço ' '
+
+'servico:' a string que sobrar de comando
+
+devera ser adicionada um item 'descricao:' a seguinte string '[comando] o paciente para [servico].'
+o segundo item da lista passada, '!ENCAMINHO PSICOLOGIA', se tornaria:
+{
+comando: 'ENCAMINHAR',
+servico:'PSICOLOGIA',
+descricao:'Encamihar o paciente para PSICOLOGIA'
+}
+
+- se comecar com '!ORIENTO', a string devera ser dividida em algumas partes:
+'comando:' toda string após o '!' ate o proximo espaço ' '
+
+'orientacao:' a string que sobrar de comando
+devera ser adicionada um item 'descricao:' a seguinte string '[comando] o paciente a [orientacao].'
+o terceiro item da lista passada, '!ORIENTO ATIVIDADE FISICA REGULAR', se tornaria:
+{
+comando: 'ORIENTAR',
+orientacao:'ATIVIDADE FISICA REGULAR',
+descricao:'Orientar o paciente para ATIVIDADE FISICA REGULAR'
+}
+~
