@@ -21,12 +21,25 @@
 - **Parameters**: None.
 - **Behavior**: Asks for user input, validates CPF, confirms creation, creates `pacientes/{cpf}/` directory and saves `info.txt`.
 
+### `listar_pacientes()`
+- **Purpose**: Lists all patients with their name, CPF, and date of last attendance.
+- **Parameters**: None.
+- **Behavior**: Scans `pacientes/` directory, reads `info.txt` for each patient, finds the most recent `.med` file's modification date, displays in a table format.
+
+### `get_last_med_date(dir_path: &str) -> String`
+- **Purpose**: Finds the modification date of the most recent `.med` file in a directory.
+- **Parameters**:
+  - `dir_path`: Path to the patient's directory.
+- **Returns**: Date in YYYY-MM-DD format or empty string if no `.med` files.
+
 ## Keywords and Prefixes
 
 ### CLI Commands
 - `novo`: Command to create new entities.
   - `paciente`: Create a new patient (prompts for name and CPF, creates patient directory).
   - `atendimento`: Create a new appointment.
+- `listar`: Command to list entities.
+  - `pacientes`: List all patients with name, CPF, and last attendance date.
 
 ### Medication Commands
 - `+`: Prefix for "ADICIONAR" (Add)
