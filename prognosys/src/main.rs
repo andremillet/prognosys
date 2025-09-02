@@ -230,6 +230,16 @@ fn atendimento() {
         return;
     }
 
+    // Confirmar criação
+    println!("Criar novo atendimento para {}? (s/n)", name);
+    let mut confirm = String::new();
+    stdin.read_line(&mut confirm).unwrap();
+    confirm = confirm.trim().to_lowercase();
+    if confirm != "s" && confirm != "sim" {
+        println!("Operação cancelada.");
+        return;
+    }
+
     // Criar datetime
     let now = Utc::now();
     let datetime = format!("{:04}-{:02}-{:02}_{:02}-{:02}-{:02}",
