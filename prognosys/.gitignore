@@ -1,0 +1,34 @@
+# Build artifacts
+target/
+*.db
+*.med
+pacientes/
+output.txt
+
+# Personal files
+.bash_history
+.bashrc
+.bash_profile
+.bash_logout
+.cache/
+.config/
+.local/
+.mozilla/
+.pki/
+.ssh/
+.XCompose
+.cargo/
+.opencode/
+.gitignore
+
+# Other
+Downloads/
+Pictures/
+conduta-handler/
+conecta-git/
+identifica_secoes
+identifica_secoes.py
+identifica_secoes.rs
+identifica_secoes_proto/
+output.json
+output.proto
