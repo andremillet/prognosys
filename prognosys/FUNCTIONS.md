@@ -32,12 +32,23 @@
   - `dir_path`: Path to the patient's directory.
 - **Returns**: Date in YYYY-MM-DD format or empty string if no `.med` files.
 
+### `atendimento()`
+- **Purpose**: Creates a new attendance for a patient by prompting for CPF or name.
+- **Parameters**: None.
+- **Behavior**: Handles input as CPF or name, searches if name, allows selection, creates empty `.med` file with name_datetime in patient's directory.
+
+### `search_patients_by_name(query: &str) -> Vec<(String, String)>`
+- **Purpose**: Searches for patients by name in the `pacientes/` directory.
+- **Parameters**:
+  - `query`: Name query string.
+- **Returns**: Vector of (name, cpf) tuples matching the query.
+
 ## Keywords and Prefixes
 
 ### CLI Commands
 - `novo`: Command to create new entities.
   - `paciente`: Create a new patient (prompts for name and CPF, creates patient directory).
-  - `atendimento`: Create a new appointment.
+  - `atendimento`: Create a new appointment (prompts for CPF or name, creates .med file).
 - `listar`: Command to list entities.
   - `pacientes`: List all patients with name, CPF, and last attendance date.
 

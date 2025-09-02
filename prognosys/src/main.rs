@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::io::{self, BufRead};
+use chrono::{Datelike, Timelike, Utc};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -21,7 +22,7 @@ fn main() {
             let option = &args[2];
             match option.as_str() {
                 "paciente" => criar_paciente(),
-                "atendimento" => println!("ok"),
+                "atendimento" => atendimento(),
                 _ => println!("Opção inválida: {}", option),
             }
         }
@@ -156,4 +157,122 @@ fn get_last_med_date(dir_path: &str) -> String {
     } else {
         "".to_string()
     }
+}
+
+fn atendimento() {
+    let stdin = io::stdin();
+    println!("Digite CPF (11 dígitos) ou nome do paciente:");
+    let mut input = String::new();
+    stdin.read_line(&mut input).unwrap();
+    input = input.trim().to_string();
+
+    let cpf = if input.len() == 11 && input.chars().all(|c| c.is_numeric()) {
+        // É CPF
+        input
+    } else {
+        // É nome, buscar
+        let matches = search_patients_by_name(&input);
+        if matches.is_empty() {
+            println!("Nenhum paciente encontrado com nome '{}'. Criar novo paciente? (s/n)", input);
+            let mut confirm = String::new();
+            stdin.read_line(&mut confirm).unwrap();
+            if confirm.trim().to_lowercase() == "s" || confirm.trim().to_lowercase() == "sim" {
+                criar_paciente();
+                return; // Após criar, talvez reiniciar, mas por enquanto sair
+            } else {
+                println!("Operação cancelada.");
+                return;
+            }
+        } else if matches.len() == 1 {
+            matches[0].1.clone()
+        } else {
+            println!("Múltiplos pacientes encontrados:");
+            for (i, (name, cpf)) in matches.iter().enumerate() {
+                println!("{}. {} - {}", i + 1, name, cpf);
+            }
+            println!("Escolha o número:");
+            let mut choice = String::new();
+            stdin.read_line(&mut choice).unwrap();
+            if let Ok(num) = choice.trim().parse::<usize>() {
+                if num > 0 && num <= matches.len() {
+                    matches[num - 1].1.clone()
+                } else {
+                    println!("Escolha inválida.");
+                    return;
+                }
+            } else {
+                println!("Entrada inválida.");
+                return;
+            }
+        }
+    };
+
+    // Verificar se diretório existe
+    let dir_path = format!("pacientes/{}", cpf);
+    if !fs::metadata(&dir_path).is_ok() {
+        println!("Paciente com CPF {} não encontrado.", cpf);
+        return;
+    }
+
+    // Ler nome do info.txt
+    let info_path = format!("{}/info.txt", dir_path);
+    let mut name = String::new();
+    if let Ok(content) = fs::read_to_string(&info_path) {
+        for line in content.lines() {
+            if line.starts_with("Nome: ") {
+                name = line.strip_prefix("Nome: ").unwrap_or("").to_string();
+            }
+        }
+    }
+
+    if name.is_empty() {
+        println!("Erro ao ler nome do paciente.");
+        return;
+    }
+
+    // Criar datetime
+    let now = Utc::now();
+    let datetime = format!("{:04}-{:02}-{:02}_{:02}-{:02}-{:02}",
+                           now.year(), now.month(), now.day(),
+                           now.hour(), now.minute(), now.second());
+
+    // Nome para arquivo: substituir espaços por _
+    let filename = format!("{}_{}.med", name.replace(" ", "_"), datetime);
+    let file_path = format!("{}/{}", dir_path, filename);
+
+    // Criar arquivo vazio
+    if let Err(e) = fs::write(&file_path, "") {
+        println!("Erro ao criar arquivo: {}", e);
+    } else {
+        println!("Atendimento criado: {}", filename);
+    }
+}
+
+fn search_patients_by_name(query: &str) -> Vec<(String, String)> {
+    let pacientes_dir = "pacientes";
+    let mut matches = Vec::new();
+    if let Ok(entries) = fs::read_dir(pacientes_dir) {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if let Ok(metadata) = entry.metadata() {
+                    if metadata.is_dir() {
+                        let cpf = entry.file_name().to_string_lossy().to_string();
+                        let info_path = format!("{}/{}/info.txt", pacientes_dir, cpf);
+                        if let Ok(content) = fs::read_to_string(&info_path) {
+                            let mut name = String::new();
+                            for line in content.lines() {
+                                if line.starts_with("Nome: ") {
+                                    name = line.strip_prefix("Nome: ").unwrap_or("").to_string();
+                                }
+                            }
+                            if name.to_lowercase().contains(&query.to_lowercase()) {
+                                matches.push((name, cpf));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    matches
 }
